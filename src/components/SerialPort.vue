@@ -4,7 +4,9 @@
     class="container mx-auto my-10 p-6 border border-gray-200 dark:border-gray-700 rounded-lg shadow dark:bg-gray-800"
   >
     <div class="title mb-6">
-      <h1 class="text-xl font-bold text-center text-gray-700">
+      <h1
+        class="text-xl font-bold text-center text-gray-800 dark:text-gray-200"
+      >
         SerialPort 工具
       </h1>
     </div>
@@ -167,7 +169,9 @@
           </div>
         </div>
         <div class="data-receive mb-4">
-          <h2 class="text-lg font-semibold text-gray-800">接收到的数据</h2>
+          <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+            接收到的数据
+          </h2>
           <textarea
             id="receivedData"
             readonly
