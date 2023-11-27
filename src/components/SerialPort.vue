@@ -3,41 +3,45 @@
         <div class="title mb-6">
             <h1 class="text-xl font-bold text-center text-gray-700">SerialPort 工具</h1>
         </div>
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-6 gap-4">
             <!-- A1 栏目 串口链接配置信息-->
-            <div class="col-span-1">
+            <div class="col-span-1 mt-4">
                 <div class="connection-settings mb-4">
-                    <div class="mb-3 ">
-                        <label for="port" class="block text-lg py-2 h-12 font-semibold text-gray-800 -medium">串口号:</label>
+                    <div class="mb-4 flex">
+                        <label for="port"
+                            class="flex-none block text-lg px-2 py-2 h-12 font-semibold text-gray-800 -medium">串口号:</label>
                         <button id="port" @click="selectSerialPort"
-                            class="mt-1 block w-full py-2 px-3 h-12 text-sm text-gray-700 font-medium border border-gray-300 bg-white rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            class="flex-auto block py-2 px-3 h-12 text-sm text-gray-700 font-medium border border-gray-300 bg-white rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             {{ portName }}
                         </button>
                     </div>
-                    <div class="mb-4">
-                        <label for="baudRate" class="block text-lg font-semibold text-gray-800 -medium">波特率:</label>
+                    <div class="mb-4 flex">
+                        <label for="baudRate"
+                            class="flex-none block text-lg px-2 py-2 h-12 font-semibold text-gray-800 -medium">波特率:</label>
                         <select id="baudRate" v-model="baudRate"
-                            class="mt-1 block w-full py-2 px-3 text-sm border border-gray-300
+                            class="flex-auto text-center block py-2 px-3 h-12 text-sm border border-gray-300
                             bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <option v-for="optionBaudRate in baudRateOptionList" :key="optionBaudRate"
                                 :value="optionBaudRate">{{
                                     optionBaudRate }}</option>
                         </select>
                     </div>
-                    <div class="mb-4">
-                        <label for="dataBits" class="block text-lg font-semibold text-gray-800 -medium">数据位:</label>
+                    <div class="mb-4 flex">
+                        <label for="dataBits"
+                            class="flex-none block text-lg px-2 py-2 h-12 font-semibold text-gray-800 -medium">数据位:</label>
                         <select id="dataBits" v-model="dataBits"
-                            class="mt-1 block w-full py-2 px-3 text-sm border border-gray-300
+                            class="flex-auto text-center block py-2 px-3 h-12 text-sm border border-gray-300
                             bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <option v-for="optionDataBit in dataBitOptionList" :key="optionDataBit" :value="optionDataBit">
                                 {{
                                     optionDataBit }}</option>
                         </select>
                     </div>
-                    <div class="mb-4">
-                        <label for="stopBits" class="block text-lg font-semibold text-gray-800 -medium">停止位:</label>
+                    <div class="mb-4 flex">
+                        <label for="stopBits"
+                            class="flex-none block text-lg px-2 py-2 h-12 font-semibold text-gray-800 -medium">停止位:</label>
                         <select id="stopBits" v-model="stopBits"
-                            class="mt-1 block w-full py-2 px-3 text-sm border border-gray-300
+                            class="flex-auto text-center block py-2 px-3 h-12 text-sm border border-gray-300
                             bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <option v-for="optionStopBit in stopBitOptionList" :key="optionStopBit" :value="optionStopBit">
                                 {{
@@ -52,23 +56,34 @@
                     </button>
                 </div>
             </div>
-            <div class="col-span-3">
-                <div class="grid grid-row-2 grid-flow-col gap-4">
-                    <div class="mt-4 p-3 border border-gray-300 bg-gray-100 rounded-lg shadow">
-                        <div class="text-lg font-semibold text-gray-800">设备 MAC 地址:</div>
-                        <div>{{ deviceMacAddress }}</div>
+            <div class="col-span-5">
+                <div class="grid grid-cols-5 gap-4 mb-4">
+                    <div v-for="(attribute, index) in attributes" :key="index"
+                        class="mt-4 p-3 border border-gray-300 bg-gray-100 rounded-lg shadow flex flex-col">
+                        <label class="mb-2">{{ attribute.name }}</label>
+                        <div v-if="!attribute.method.includes('set')"
+                            class="mb-2 h-6 text-lg font-semibold text-gray-800 bg-white">
+                            {{ attribute.value }}</div>
+                        <input v-if="attribute.method.includes('set')" :type="attribute.setParams.inputType"
+                            class="mb-2 h-6" v-model="attribute.value" :min="attribute.setParams.minValue"
+                            :max="attribute.setParams.maxValue" :required="attribute.setParams.required">
+                        <div class="flex flex-row justify-center space-x-2 mt-2">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                @click="sendCommand(attribute)">获取</button>
+                            <button v-if="attribute.method.includes('set')"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                @click="sendSetCommand(attribute)">写入</button>
+                        </div>
                     </div>
-                    <div class=" mt-4 p-3 border border-gray-300 bg-gray-100 rounded-lg shadow">
-                        <div class="text-lg font-semibold text-gray-800">无线SSID:</div>
-                        <div>{{ deviceWifiSSID }}</div>
-                    </div>
-                    <div class=" mt-4 p-3 border border-gray-300 bg-gray-100 rounded-lg shadow">
-                        <div class="text-lg font-semibold text-gray-800">无线PWD:</div>
-                        <div>{{ deviceWifiPWD }}</div>
-                    </div>
-                    <div class=" mt-4 p-3 border border-gray-300 bg-gray-100 rounded-lg shadow">
-                        <div class="text-lg font-semibold text-gray-800">设备局域网IP:</div>
-                        <div>{{ deviceLocalIP }}</div>
+                    <div v-for="(action, index) in actions" :key="index"
+                        class="mt-4 p-3 border border-gray-300 bg-gray-100 rounded-lg shadow flex flex-col">
+                        <label class="mb-2">{{ action.name }}</label>
+                        <div class="mb-2 h-6 text-lg font-semibold text-gray-800 bg-white">
+                            {{ action.value }}</div>
+                        <div class="flex flex-row justify-center space-x-2 mt-2">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                @click="sendCommand()">执行</button>
+                        </div>
                     </div>
                 </div>
                 <div class="data-receive mb-4">
@@ -77,16 +92,20 @@
                         class="mt-1 block w-full h-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm">{{ receivedData }}</textarea>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </template>
 
 <script>
+import attributes from "../assets/deviceAttributes.json";
+import actions from "../assets/deviceActions.json";
 export default {
     name: 'SerialPort',
     data () {
         return {
+            attributes: attributes.map(attr => ({ ...attr, value: '' })),
+            actions: actions.map(attr => ({ ...attr, value: '' })),
             portName: '请选择串口',
             baudRate: 115200,//串口波特率初始值设为9600
             dataBits: 8, //串口数据位
@@ -104,6 +123,13 @@ export default {
             serialStatus: false,
             reading: false,
             readableStreamClosed: '',
+            commandList: [{
+                "name": "获取重量系数",
+                "cmd": "attr:weight.scale"
+            }, {
+                "name": "",
+                "cmd": "attr:weight.offset"
+            }]
         };
     },
     // Your component logic here
@@ -178,48 +204,63 @@ export default {
             this.serialStatus = false;
             this.reader = null;
         },
-        parsePayload (line) {
-            console.log(line)
-            if (line.startsWith('{')) {
-                try {
-                    // 尝试将行解析为 JSON
-                    const json = JSON.parse(line);
-                    // 如果成功，将其添加到 receivedData
-                    console.log(json);
-                    this.receivedData += new Date().toLocaleTimeString() + " : " + line;
-                    this.addNewData(json);
-                } catch (error) {
-                    // 如果不是有效的 JSON，忽略这一行
-                    console.error('Invalid JSON:', line);
-                }
-            } else if (line.startsWith('device/')) {
-                const mac = line.substring(7);
-                this.deviceMacAddress = mac;
-            } else if (line.startsWith("Connecting to WiFi (")) {
-                const regex = /ssid=(.+), pwd=(.+)\)/;
-                const match = line.match(regex);
-                if (match) {
-                    const ssid = match[1].trim();
-                    const pwd = match[2].trim();
-                    // 可以在这里处理提取到的 ssid 和 pwd
-                    console.log(`SSID: ${ssid}, Password: ${pwd}`);
-                    // 例如，将它们保存到 data 属性中
-                    this.deviceWifiSSID = ssid;
-                    this.deviceWifiPWD = pwd;
-                }
-            } else if (line.startsWith("Connected to")) {
 
-                const regex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/;
-                const match = line.match(regex);
-                if (match) {
-                    const ip = match[1].trim();
-                    this.deviceLocalIP = ip
-                }
+        async sendCommand (attribute) {
+            if (!this.port) {
+                console.log('没有选择端口');
+                return;
             }
+            if (!this.serialStatus) {
+                console.log("没有连接端口");
+                return;
+            }
+        },
+        sendSetCommand (attribute) {
 
+        },
+    },
+    parsePayload (line) {
+        console.log(line)
+        if (line.startsWith('{')) {
+            try {
+                // 尝试将行解析为 JSON
+                const json = JSON.parse(line);
+                // 如果成功，将其添加到 receivedData
+                console.log(json);
+                this.receivedData += new Date().toLocaleTimeString() + " : " + line;
+                this.addNewData(json);
+            } catch (error) {
+                // 如果不是有效的 JSON，忽略这一行
+                console.error('Invalid JSON:', line);
+            }
+        } else if (line.startsWith('device/')) {
+            const mac = line.substring(7);
+            this.deviceMacAddress = mac;
+        } else if (line.startsWith("Connecting to WiFi (")) {
+            const regex = /ssid=(.+), pwd=(.+)\)/;
+            const match = line.match(regex);
+            if (match) {
+                const ssid = match[1].trim();
+                const pwd = match[2].trim();
+                // 可以在这里处理提取到的 ssid 和 pwd
+                console.log(`SSID: ${ssid}, Password: ${pwd}`);
+                // 例如，将它们保存到 data 属性中
+                this.deviceWifiSSID = ssid;
+                this.deviceWifiPWD = pwd;
+            }
+        } else if (line.startsWith("Connected to")) {
+
+            const regex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/;
+            const match = line.match(regex);
+            if (match) {
+                const ip = match[1].trim();
+                this.deviceLocalIP = ip
+            }
         }
+
     }
 }
+
 </script>
 
 <style scoped>

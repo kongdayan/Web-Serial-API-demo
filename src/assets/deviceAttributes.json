@@ -1,0 +1,86 @@
+[
+  {
+    "name": "重量系数",
+    "cmd": "attr:weight.scale",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "inputType": "number",
+      "minValue": 0,
+      "maxValue": 100,
+      "required": true
+    }
+  },
+  {
+    "name": "重量修正值=系数",
+    "cmd": "attr:weight.offset",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "inputType": "number",
+      "minValue": -50,
+      "maxValue": 50,
+      "required": true
+    }
+  },
+  {
+    "name": "CPUID",
+    "cmd": "attr:sys.cpuid",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "WiFi-MAC地址",
+    "cmd": "attr.wifi.mac",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "LocalIP地址",
+    "cmd": "attr.wifi.ip",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "WiFi配置信息",
+    "cmd": "attr:wifi.config",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "comment": "#TODO 针对于wifi配置的格式要求,多个输入段"
+    }
+  },
+  {
+    "name": "WiFi信号强度",
+    "cmd": "attr.wifi.rssi",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "服务器地址",
+    "cmd": "attr.server.ip",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "comment": "#TODO 针对服务器地址的设定要求"
+    }
+  },
+  {
+    "name": "服务器域名",
+    "cmd": "attr.server.name",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "comment": " #TODO 针对服务器域名的设定要求"
+    }
+  },
+  {
+    "name": "log等级",
+    "cmd": "attr.sys.loglevel",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "comment": "#TODO针对log等级的设定要求"
+    }
+  }
+]
