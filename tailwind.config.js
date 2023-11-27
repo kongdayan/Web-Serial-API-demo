@@ -4,5 +4,6 @@ export default {
   theme: {
     extend: {},
   },
+  darkMode: "media", // 开启深色模式
   plugins: [],
 };
