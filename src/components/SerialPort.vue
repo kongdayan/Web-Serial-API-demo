@@ -123,13 +123,6 @@ export default {
             serialStatus: false,
             reading: false,
             readableStreamClosed: '',
-            commandList: [{
-                "name": "获取重量系数",
-                "cmd": "attr:weight.scale"
-            }, {
-                "name": "",
-                "cmd": "attr:weight.offset"
-            }]
         };
     },
     // Your component logic here
@@ -218,47 +211,70 @@ export default {
         sendSetCommand (attribute) {
 
         },
-    },
-    parsePayload (line) {
-        console.log(line)
-        if (line.startsWith('{')) {
-            try {
-                // 尝试将行解析为 JSON
-                const json = JSON.parse(line);
-                // 如果成功，将其添加到 receivedData
-                console.log(json);
-                this.receivedData += new Date().toLocaleTimeString() + " : " + line;
-                this.addNewData(json);
-            } catch (error) {
-                // 如果不是有效的 JSON，忽略这一行
-                console.error('Invalid JSON:', line);
+        updateAttributeValue (attrName, newValue) {
+            const attrIndex = this.attributes.findIndex(attr => attr.name === attrName);
+            if (attrIndex !== -1) {
+                this.attributes[attrIndex].value = newValue;
             }
-        } else if (line.startsWith('device/')) {
-            const mac = line.substring(7);
-            this.deviceMacAddress = mac;
-        } else if (line.startsWith("Connecting to WiFi (")) {
-            const regex = /ssid=(.+), pwd=(.+)\)/;
-            const match = line.match(regex);
-            if (match) {
-                const ssid = match[1].trim();
-                const pwd = match[2].trim();
-                // 可以在这里处理提取到的 ssid 和 pwd
-                console.log(`SSID: ${ssid}, Password: ${pwd}`);
-                // 例如，将它们保存到 data 属性中
-                this.deviceWifiSSID = ssid;
-                this.deviceWifiPWD = pwd;
+        },
+        updateActionValue (actionName, newValue) {
+            const actionIndex = this.actions.findIndex(act => act.name === actionName);
+            if (actionIndex !== -1) {
+                this.actions[actionIndex].value = newValue;
             }
-        } else if (line.startsWith("Connected to")) {
+        },
+        parsePayload (line) {
+            console.log(line)
+            if (line.startsWith('{')) {
+                try {
+                    // 尝试将行解析为 JSON
+                    const json = JSON.parse(line);
+                    // 如果成功，将其添加到 receivedData
+                    console.log(json);
+                    this.receivedData += new Date().toLocaleTimeString() + " : " + line;
+                    this.addNewData(json);
+                    this.updateActionValue("获取环境湿度", json.dht.humi);
+                    this.updateActionValue("获取环境温度", json.dht.temp);
+                    // this.updateActionValue("获取重量信息", json.weight.value);
+                    // this.updateActionValue("获取环境湿度", json.dht.humi);
+                } catch (error) {
+                    // 如果不是有效的 JSON，忽略这一行
+                    console.error('Invalid JSON:', line);
+                }
+            } else if (line.startsWith('device/')) {
+                const mac = line.substring(7);
+                this.deviceMacAddress = mac;
+                this.updateAttributeValue('WiFi-MAC地址', mac); // 更新 WiFi-MAC地址
+                this.updateAttributeValue('CPUID', mac);
+            } else if (line.startsWith("Connecting to WiFi (")) {
+                const regex = /ssid=(.+), pwd=(.+)\)/;
+                const match = line.match(regex);
+                if (match) {
+                    const ssid = match[1].trim();
+                    const pwd = match[2].trim();
+                    // 可以在这里处理提取到的 ssid 和 pwd
+                    console.log(`SSID: ${ssid}, Password: ${pwd}`);
+                    // 例如，将它们保存到 data 属性中
+                    this.deviceWifiSSID = ssid;
+                    this.deviceWifiPWD = pwd;
+                    this.updateAttributeValue(
+                        "WiFi配置信息", ssid + "," + pwd
+                    );
+                }
+            } else if (line.startsWith("Connected to")) {
 
-            const regex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/;
-            const match = line.match(regex);
-            if (match) {
-                const ip = match[1].trim();
-                this.deviceLocalIP = ip
+                const regex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/;
+                const match = line.match(regex);
+                if (match) {
+                    const ip = match[1].trim();
+                    this.deviceLocalIP = ip
+                    this.updateAttributeValue('LocalIP地址', ip);
+                }
             }
+
         }
+    },
 
-    }
 }
 
 </script>

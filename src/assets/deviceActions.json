@@ -1,42 +1,58 @@
 [
   {
     "name": "连接WiFi",
-    "cmd": "cmd:wifi.conn"
+    "cmd": "cmd:wifi.conn",
+    "status": ""
   },
   {
     "name": "断开WiFi",
-    "cmd": "cmd:wifi.disconn"
+    "cmd": "cmd:wifi.disconn",
+    "status": "",
+    "value": ""
   },
   {
     "name": "获取环境湿度",
-    "cmd": "cmd:humi.value"
+    "cmd": "cmd:humi.value",
+    "status": "",
+    "value": ""
   },
   {
     "name": "获取环境温度",
-    "cmd": "cmd:temp.value"
+    "cmd": "cmd:temp.value",
+    "status": "",
+    "value": ""
   },
   {
     "name": "获取库存信息",
-    "cmd": "cmd:rfid.inventory"
+    "cmd": "cmd:rfid.inventory",
+    "status": "",
+    "value": ""
   },
   {
     "name": "获取重量信息",
-    "cmd": "cmd:weight.value"
+    "cmd": "cmd:weight.value",
+    "status": "",
+    "value": ""
   },
   {
     "name": "去皮清零",
-    "cmd": "cmd:weight.tare"
+    "cmd": "cmd:weight.tare",
+    "status": ""
   },
   {
     "name": "校准重量",
-    "cmd": "cmd:weight.calib=<100.00> #TODO"
+    "cmd": "cmd:weight.calib=<100.00> #TODO",
+    "status": ""
   },
   {
     "name": "睡眠间隔自动调整  #TODO",
-    "cmd": "cmd/sleep.adjust"
+    "cmd": "cmd/sleep.adjust",
+    "status": ""
   },
   {
     "name": "睡眠间隔",
-    "cmd": "cmd:sleep.threshold=0.01"
+    "cmd": "cmd:sleep.threshold=0.01",
+    "status": "",
+    "value": ""
   }
 ]
