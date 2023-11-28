@@ -1,6 +1,12 @@
 [
   {
-    "name": "重量系数",
+    "name": "重量",
+    "cmd": "cmd:weight.value",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "重量系数W1",
     "cmd": "attr:weight.scale",
     "method": ["get", "set"],
     "value": "",
@@ -12,7 +18,7 @@
     }
   },
   {
-    "name": "重量修正值=系数",
+    "name": "重量系数W2",
     "cmd": "attr:weight.offset",
     "method": ["get", "set"],
     "value": "",
@@ -22,6 +28,24 @@
       "maxValue": 50,
       "required": true
     }
+  },
+  {
+    "name": "湿度",
+    "cmd": "cmd:humi.value",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "温度",
+    "cmd": "cmd:temp.value",
+    "method": ["get"],
+    "value": ""
+  },
+  {
+    "name": "RFID标签盘存",
+    "cmd": "cmd:rfid.inventory",
+    "method": ["get"],
+    "value": ""
   },
   {
     "name": "CPUID",
@@ -47,6 +71,7 @@
     "method": ["get", "set"],
     "value": "",
     "setParams": {
+      "inputType": "string",
       "comment": "#TODO 针对于wifi配置的格式要求,多个输入段"
     }
   },
@@ -62,6 +87,7 @@
     "method": ["get", "set"],
     "value": "",
     "setParams": {
+      "inputType": "string",
       "comment": "#TODO 针对服务器地址的设定要求"
     }
   },
@@ -71,6 +97,7 @@
     "method": ["get", "set"],
     "value": "",
     "setParams": {
+      "inputType": "string",
       "comment": " #TODO 针对服务器域名的设定要求"
     }
   },
@@ -80,6 +107,17 @@
     "method": ["get", "set"],
     "value": "",
     "setParams": {
+      "inputType": "string",
+      "comment": "#TODO针对log等级的设定要求"
+    }
+  },
+  {
+    "name": "休眠间隔",
+    "cmd": "cmd:sleep.threshold #TODO",
+    "method": ["get", "set"],
+    "value": "",
+    "setParams": {
+      "inputType": "number",
       "comment": "#TODO针对log等级的设定要求"
     }
   }

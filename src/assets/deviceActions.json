@@ -7,32 +7,7 @@
   {
     "name": "断开WiFi",
     "cmd": "cmd:wifi.disconn",
-    "status": "",
-    "value": ""
-  },
-  {
-    "name": "获取环境湿度",
-    "cmd": "cmd:humi.value",
-    "status": "",
-    "value": ""
-  },
-  {
-    "name": "获取环境温度",
-    "cmd": "cmd:temp.value",
-    "status": "",
-    "value": ""
-  },
-  {
-    "name": "获取库存信息",
-    "cmd": "cmd:rfid.inventory",
-    "status": "",
-    "value": ""
-  },
-  {
-    "name": "获取重量信息",
-    "cmd": "cmd:weight.value",
-    "status": "",
-    "value": ""
+    "status": ""
   },
   {
     "name": "去皮清零",
@@ -41,18 +16,12 @@
   },
   {
     "name": "校准重量",
-    "cmd": "cmd:weight.calib=<100.00> #TODO",
+    "cmd": "cmd:weight.calib #TODO",
     "status": ""
   },
   {
-    "name": "睡眠间隔自动调整  #TODO",
-    "cmd": "cmd/sleep.adjust",
+    "name": "睡眠间隔自动调整  ",
+    "cmd": "cmd:sleep.adjust #TODO",
     "status": ""
-  },
-  {
-    "name": "睡眠间隔",
-    "cmd": "cmd:sleep.threshold=0.01",
-    "status": "",
-    "value": ""
   }
 ]
